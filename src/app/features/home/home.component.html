@@ -1,0 +1,32 @@
+<div class="home">
+  <header class="home__header u-animate-in">
+    <p class="home__eyebrow">Honest format detection</p>
+    <h1 class="home__title u-gradient-text">YouTube Downloader</h1>
+    <p class="home__lead">Every resolution YouTube actually serves — pick, preview, download.</p>
+  </header>
+
+  <div class="u-animate-in u-animate-in-delay-1">
+    <app-url-input [loading]="loading()" (submitted)="analyze($event)" />
+  </div>
+
+  @if (error(); as message) {
+    <p-message severity="error" styleClass="home__alert" role="alert" @errorShake>
+      {{ message }}
+    </p-message>
+  }
+
+  @if (loading()) {
+    <app-analysis-skeleton @fadeSlide />
+  }
+
+  @if (analysis(); as result) {
+    <div @resultsEnter>
+      <app-download-studio
+        [analysis]="result"
+        [sourceUrl]="sourceUrl()"
+        [downloading]="downloading()"
+        (download)="download($event)"
+      />
+    </div>
+  }
+</div>

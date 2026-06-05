@@ -1,0 +1,41 @@
+@reference "tailwindcss";
+
+:host {
+  display: block;
+}
+
+.home {
+  @apply mx-auto flex w-full max-w-6xl flex-col gap-5 px-4 py-6 md:py-10;
+}
+
+.home__header {
+  @apply space-y-2 text-center;
+}
+
+.home__eyebrow {
+  @apply text-xs font-semibold uppercase tracking-[0.25em] text-red-400/90;
+}
+
+.home__title {
+  @apply text-3xl font-bold md:text-4xl;
+}
+
+.home__lead {
+  @apply mx-auto max-w-lg text-sm text-slate-400 md:text-base;
+}
+
+.home__alert {
+  @apply w-full overflow-hidden rounded-xl;
+  animation: fade-slide-up 0.4s var(--ease-out-expo) both;
+}
+
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,52 @@
+<section class="url-input" aria-labelledby="url-input-heading">
+  <div class="url-input__header">
+    <h2 id="url-input-heading" class="url-input__title">Paste a YouTube link</h2>
+    <p class="url-input__subtitle">
+      We only list formats that actually exist for the video — from 144p up to the true maximum
+      (including FPS variants when available).
+    </p>
+  </div>
+
+  <form class="url-input__form" (ngSubmit)="submit($event)" novalidate>
+    <div class="url-input__field">
+      <p-iconfield iconPosition="left" class="url-input__icon-field">
+        <p-inputicon class="pi pi-link" />
+        <input
+          pInputText
+          type="url"
+          inputmode="url"
+          autocomplete="off"
+          placeholder="https://www.youtube.com/watch?v=..."
+          [formControl]="urlControl"
+          aria-describedby="url-help url-error"
+          class="url-input__control"
+        />
+      </p-iconfield>
+
+      <p-button
+        type="button"
+        label="Analyze"
+        icon="pi pi-search"
+        [loading]="loading()"
+        [disabled]="loading()"
+        (onClick)="submit()"
+        aria-label="Analyze YouTube video"
+      />
+    </div>
+
+    <div class="url-input__meta">
+      <p id="url-help" class="url-input__help">
+        Supports watch URLs, Shorts, and youtu.be links.
+      </p>
+      <button type="button" class="url-input__example" (click)="setExampleUrl()">
+        Try an example
+      </button>
+    </div>
+
+    @if (urlControl.touched && urlControl.invalid) {
+      <p id="url-error" class="url-input__error" role="alert">
+        Enter a valid YouTube URL to continue.
+      </p>
+    }
+  </form>
+</section>

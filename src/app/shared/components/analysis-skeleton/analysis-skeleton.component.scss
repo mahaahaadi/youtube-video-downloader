@@ -1,0 +1,83 @@
+@reference "tailwindcss";
+
+:host {
+  display: block;
+}
+
+.skeleton {
+  @apply overflow-hidden rounded-2xl p-4;
+  background: var(--gradient-surface);
+  border: 1px solid rgb(255 255 255 / 10%);
+  box-shadow:
+    0 0 0 1px rgb(255 0 51 / 8%) inset,
+    0 24px 48px rgb(0 0 0 / 35%);
+}
+
+.skeleton__status {
+  @apply mb-4 flex items-center gap-3 text-sm text-slate-300;
+}
+
+.skeleton__pulse {
+  @apply relative h-2.5 w-2.5 shrink-0 rounded-full bg-red-500;
+
+  &::after {
+    content: "";
+    @apply absolute inset-0 rounded-full bg-red-400;
+    animation: ping 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+}
+
+.skeleton__layout {
+  @apply grid gap-4 lg:grid-cols-[minmax(240px,320px)_1fr];
+}
+
+.skeleton__preview,
+.skeleton__panel {
+  @apply space-y-3;
+}
+
+.skeleton__card {
+  @apply rounded-xl p-3;
+  background: rgb(251 191 36 / 6%);
+  border: 1px solid rgb(251 191 36 / 15%);
+}
+
+.skeleton__tabs {
+  @apply flex gap-2;
+}
+
+.skeleton__fields {
+  @apply grid gap-3 sm:grid-cols-2;
+
+  :last-child {
+    @apply sm:col-span-2;
+  }
+}
+
+.skeleton__footer {
+  @apply grid gap-3 rounded-xl border border-white/10 bg-slate-950/50 p-3 sm:grid-cols-[1fr_140px];
+}
+
+.skeleton__footer-meta {
+  @apply grid grid-cols-2 gap-2;
+}
+
+.skeleton__gap {
+  @apply mt-3;
+}
+
+.skeleton__gap-sm {
+  @apply mt-2;
+}
+
+@keyframes ping {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  75%,
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}

@@ -1,0 +1,113 @@
+@reference "tailwindcss";
+
+:host {
+  display: block;
+  transition:
+    box-shadow 0.35s var(--ease-out-expo),
+    border-color 0.35s ease,
+    transform 0.35s var(--ease-out-expo);
+}
+
+:host(:has(.url-input__control:focus)) {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px rgb(255 0 51 / 25%) inset,
+    0 20px 40px rgb(0 0 0 / 30%),
+    0 0 48px rgb(255 0 51 / 12%);
+}
+
+.url-input {
+  @apply relative overflow-hidden rounded-2xl p-6;
+  background: var(--gradient-surface);
+  border: 1px solid rgb(255 255 255 / 12%);
+  box-shadow: 0 16px 40px rgb(0 0 0 / 25%);
+  backdrop-filter: blur(20px);
+
+  &::before {
+    content: "";
+    @apply pointer-events-none absolute inset-x-0 top-0 h-px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 0 51 / 50%),
+      rgb(124 58 237 / 50%),
+      transparent
+    );
+  }
+}
+
+.url-input__header {
+  @apply mb-5 space-y-2;
+}
+
+.url-input__title {
+  @apply text-xl font-semibold text-slate-50;
+}
+
+.url-input__subtitle {
+  @apply text-sm leading-relaxed text-slate-400;
+}
+
+.url-input__form {
+  @apply space-y-3;
+}
+
+.url-input__field {
+  @apply flex flex-col gap-3 sm:flex-row;
+}
+
+.url-input__icon-field {
+  @apply w-full flex-1;
+}
+
+.url-input__control {
+  @apply w-full transition-all duration-300;
+}
+
+.url-input__meta {
+  @apply flex flex-wrap items-center justify-between gap-2;
+}
+
+.url-input__help {
+  @apply text-xs text-slate-500;
+}
+
+.url-input__example {
+  @apply rounded-full px-2 py-0.5 text-xs font-medium text-red-400 transition-colors duration-200 hover:bg-red-500/10 hover:text-red-300;
+}
+
+.url-input__error {
+  @apply text-sm text-red-400;
+  animation: fade-slide-up 0.3s ease both;
+}
+
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+:host ::ng-deep {
+  .p-inputtext {
+    @apply border-white/10 bg-slate-950/60 transition-all duration-300;
+
+    &:enabled:focus {
+      border-color: rgb(255 0 51 / 45%);
+      box-shadow: 0 0 0 3px rgb(255 0 51 / 15%);
+    }
+  }
+
+  .p-button {
+    @apply transition-all duration-300;
+
+    &:not(:disabled):hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgb(255 0 51 / 25%);
+    }
+  }
+}

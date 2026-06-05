@@ -1,0 +1,180 @@
+@import "tailwindcss";
+@import "primeicons/primeicons.css";
+
+/* ── Design tokens ── */
+:root {
+  --yt-red: #ff0033;
+  --yt-red-soft: #ff4d6d;
+  --yt-violet: #7c3aed;
+  --yt-cyan: #22d3ee;
+  --yt-amber: #fbbf24;
+  --glass-bg: rgb(15 23 42 / 55%);
+  --glass-border: rgb(255 255 255 / 12%);
+  --gradient-brand: linear-gradient(135deg, var(--yt-red) 0%, var(--yt-violet) 50%, var(--yt-cyan) 100%);
+  --gradient-surface: linear-gradient(
+    145deg,
+    rgb(30 41 59 / 80%) 0%,
+    rgb(15 23 42 / 90%) 45%,
+    rgb(2 6 23 / 95%) 100%
+  );
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+html.dark-mode {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Outfit", Inter, system-ui, sans-serif;
+  background-color: #020617;
+  color: #f8fafc;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Keyframes ── */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes float-orb {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -20px) scale(1.05);
+  }
+  66% {
+    transform: translate(-20px, 15px) scale(0.95);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes scan-line {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+/* ── Utility classes ── */
+.u-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgb(51 65 85 / 40%) 0%,
+    rgb(100 116 139 / 55%) 50%,
+    rgb(51 65 85 / 40%) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+.u-gradient-text {
+  background: var(--gradient-brand);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-shift 6s ease infinite;
+}
+
+.u-animate-in {
+  animation: fade-slide-up 0.55s var(--ease-out-expo) both;
+}
+
+.u-animate-in-delay-1 {
+  animation-delay: 80ms;
+}
+
+.u-animate-in-delay-2 {
+  animation-delay: 160ms;
+}
+
+.u-animate-in-delay-3 {
+  animation-delay: 240ms;
+}
+
+.u-glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* PrimeNG skeleton theming */
+.p-skeleton {
+  background: rgb(51 65 85 / 50%) !important;
+}
+
+.p-skeleton::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(148 163 184 / 25%),
+    transparent
+  ) !important;
+}

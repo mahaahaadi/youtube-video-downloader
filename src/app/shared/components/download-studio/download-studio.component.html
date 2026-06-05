@@ -1,0 +1,218 @@
+<section class="studio" aria-labelledby="studio-title">
+  <div class="studio__preview studio__reveal studio__reveal--1">
+    <div class="studio__thumb-wrap">
+      <div class="studio__thumb-shimmer" [class.studio__thumb-shimmer--hidden]="thumbLoaded()"></div>
+      <img
+        [src]="analysis().thumbnailUrl"
+        [alt]="analysis().title + ' thumbnail'"
+        width="640"
+        height="360"
+        loading="lazy"
+        decoding="async"
+        class="studio__thumb"
+        [class.studio__thumb--loaded]="thumbLoaded()"
+        (load)="onThumbLoad()"
+      />
+      <span class="studio__duration">{{ analysis().durationLabel }}</span>
+    </div>
+
+    <div class="studio__meta">
+      <p-tag [value]="analysis().maxResolutionLabel" severity="info" icon="pi pi-verified" />
+      <h2 id="studio-title" class="studio__title">{{ analysis().title }}</h2>
+      <p class="studio__author">{{ analysis().author }}</p>
+    </div>
+  </div>
+
+  <div class="studio__panel">
+    <div class="studio__recommended studio__reveal studio__reveal--2">
+      <div class="studio__recommended-glow" aria-hidden="true"></div>
+      <div class="studio__recommended-head">
+        <span class="studio__star-wrap">
+          <i class="pi pi-star-fill studio__star" aria-hidden="true"></i>
+        </span>
+        <div>
+          <p class="studio__recommended-title">Best picks</p>
+          <p class="studio__recommended-sub">Verified highest quality streams for this video</p>
+        </div>
+      </div>
+
+      <div class="studio__recommended-actions">
+        <p-button
+          icon="pi pi-video"
+          [label]="recommendations().videoLabel"
+          [disabled]="!recommendations().videoId || downloading()"
+          [loading]="downloading()"
+          (onClick)="downloadRecommended('video')"
+          styleClass="studio__chip-btn studio__chip-btn--video"
+        />
+        <p-button
+          icon="pi pi-volume-up"
+          [label]="recommendations().audioLabel"
+          severity="secondary"
+          [disabled]="!recommendations().audioId || downloading()"
+          [loading]="downloading()"
+          (onClick)="downloadRecommended('audio')"
+          styleClass="studio__chip-btn studio__chip-btn--audio"
+        />
+      </div>
+    </div>
+
+    <div class="studio__reveal studio__reveal--3">
+      <p-tabs [value]="activeTab()" (valueChange)="onTabChange($event)">
+        <p-tablist>
+          <p-tab value="video"><i class="pi pi-video"></i> Video</p-tab>
+          <p-tab value="audio"><i class="pi pi-volume-up"></i> Audio</p-tab>
+          <p-tab value="extras"><i class="pi pi-box"></i> Extras</p-tab>
+        </p-tablist>
+
+        <p-tabpanels>
+          <p-tabpanel value="video">
+            <div class="studio__grid studio__tab-content">
+              <label class="studio__field">
+                <span>Resolution</span>
+                <p-select
+                  [options]="resolutionOptions()"
+                  [ngModel]="selectedResolution()"
+                  (ngModelChange)="onResolutionChange($event)"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Select resolution"
+                  styleClass="studio__select"
+                />
+              </label>
+
+              <label class="studio__field">
+                <span>FPS</span>
+                <p-select
+                  [options]="fpsOptions()"
+                  [ngModel]="selectedFps()"
+                  (ngModelChange)="onFpsChange($event)"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Select FPS"
+                  [disabled]="!fpsOptions().length"
+                  styleClass="studio__select"
+                />
+              </label>
+
+              <label class="studio__field studio__field--wide">
+                <span>Video format</span>
+                <p-select
+                  [options]="videoContainerOptions()"
+                  [ngModel]="selectedVideoFormatId()"
+                  (ngModelChange)="selectedVideoFormatId.set($event)"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Select container / codec"
+                  [disabled]="!videoContainerOptions().length"
+                  styleClass="studio__select"
+                />
+              </label>
+            </div>
+          </p-tabpanel>
+
+          <p-tabpanel value="audio">
+            <div class="studio__grid studio__tab-content">
+              <label class="studio__field studio__field--wide">
+                <span>Audio format</span>
+                <p-select
+                  [options]="audioFormatOptions()"
+                  [ngModel]="selectedAudioFormatId()"
+                  (ngModelChange)="selectedAudioFormatId.set($event)"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="MP3, WAV, M4A, FLAC…"
+                  styleClass="studio__select"
+                />
+              </label>
+
+              @if (selectedAudioFormat(); as audio) {
+                <label class="studio__field">
+                  <span>Bitrate</span>
+                  <p-select
+                    [options]="[{ label: audio.bitrate ? (audio.bitrate / 1000 | number: '1.0-0') + ' kbps' : 'Best available', value: audio.id }]"
+                    [ngModel]="audio.id"
+                    optionLabel="label"
+                    optionValue="value"
+                    [disabled]="true"
+                    styleClass="studio__select"
+                  />
+                </label>
+              }
+            </div>
+          </p-tabpanel>
+
+          <p-tabpanel value="extras">
+            <div class="studio__grid studio__tab-content">
+              <label class="studio__field">
+                <span>Extra type</span>
+                <p-select
+                  [options]="[
+                    { label: 'Subtitles', value: 'subtitle' },
+                    { label: 'Thumbnail', value: 'thumbnail' },
+                  ]"
+                  [ngModel]="extraKind()"
+                  (ngModelChange)="extraKind.set($event)"
+                  optionLabel="label"
+                  optionValue="value"
+                  styleClass="studio__select"
+                />
+              </label>
+
+              @if (extraKind() === 'subtitle') {
+                <label class="studio__field studio__field--wide">
+                  <span>Language</span>
+                  <p-select
+                    [options]="subtitleOptions()"
+                    [ngModel]="selectedSubtitleId()"
+                    (ngModelChange)="selectedSubtitleId.set($event)"
+                    optionLabel="label"
+                    optionValue="value"
+                    placeholder="No subtitles available"
+                    [disabled]="!subtitleOptions().length"
+                    styleClass="studio__select"
+                  />
+                </label>
+              } @else {
+                <label class="studio__field studio__field--wide">
+                  <span>Size</span>
+                  <p-select
+                    [options]="thumbnailOptions()"
+                    [ngModel]="selectedThumbnailId()"
+                    (ngModelChange)="selectedThumbnailId.set($event)"
+                    optionLabel="label"
+                    optionValue="value"
+                    placeholder="No thumbnails available"
+                    [disabled]="!thumbnailOptions().length"
+                    styleClass="studio__select"
+                  />
+                </label>
+              }
+            </div>
+          </p-tabpanel>
+        </p-tabpanels>
+      </p-tabs>
+    </div>
+
+    <footer class="studio__footer studio__reveal studio__reveal--4">
+      <dl class="studio__summary">
+        @for (row of selectionSummary(); track row.label) {
+          <div class="studio__summary-item">
+            <dt>{{ row.label }}</dt>
+            <dd>{{ row.value }}</dd>
+          </div>
+        }
+      </dl>
+
+      <p-button
+        icon="pi pi-download"
+        label="Download selection"
+        size="large"
+        [disabled]="!activeFormat() || downloading()"
+        [loading]="downloading()"
+        (onClick)="downloadSelection()"
+        styleClass="studio__download-btn"
+      />
+    </footer>
+  </div>
+</section>

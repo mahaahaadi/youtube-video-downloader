@@ -1,0 +1,28 @@
+<div class="app-shell">
+  <div class="app-shell__bg" aria-hidden="true">
+    <div class="app-shell__orb app-shell__orb--red"></div>
+    <div class="app-shell__orb app-shell__orb--violet"></div>
+    <div class="app-shell__orb app-shell__orb--cyan"></div>
+    <div class="app-shell__grid"></div>
+  </div>
+
+  <header class="app-shell__header u-animate-in">
+    <div class="app-shell__brand">
+      <span class="app-shell__logo-wrap">
+        <i class="pi pi-youtube app-shell__logo" aria-hidden="true"></i>
+      </span>
+      <div>
+        <span class="app-shell__name u-gradient-text">YT Fetch</span>
+        <p class="app-shell__tagline">Real resolutions only · No fake labels</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-shell__main">
+    <router-outlet />
+  </main>
+
+  <footer class="app-shell__footer">
+    <p>For personal use. Respect copyright and YouTube Terms of Service.</p>
+  </footer>
+</div>
